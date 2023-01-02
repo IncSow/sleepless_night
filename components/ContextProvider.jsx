@@ -23,6 +23,22 @@ const initialState = [
       },
     ],
   },
+  {
+    name: "Python list!",
+    id: 1,
+    todo_tasks: [
+      {
+        id: 2,
+        content: "flask-todo",
+        completed: false,
+      },
+      {
+        id: 3,
+        content: "cli-todo",
+        completed: false,
+      },
+    ],
+  }
 ]
 
 export const Context = createContext()
@@ -31,18 +47,17 @@ export const useContext = () => useNativeContext(Context)
 
 const ContextProvider = (props) => {
   const [nextTaskId, setNextTaskId] = useState(1)
+  const [currentCategory, setCurrentCategory] = useState(0)
+  
 
   const getNextTaskId = useCallback(() => {
     setNextTaskId(nextTaskId + 1)
-    return nextTaskId
   }, [nextTaskId])
 
   const [nextTodoId, setNextTodoId] = useState(0)
 
   const getNextTodoId = useCallback(() => {
-    setNextTodoId(nextTodotId + 1)
-
-    return nextTodoId
+    setNextTodoId(nextTodoId + 1)
   }, [nextTodoId])
 
   const [state, setState] = useState(initialState)
@@ -101,6 +116,8 @@ const ContextProvider = (props) => {
       {...props}
       value={{
         state,
+        currentCategory,
+        setCurrentCategory,
         createTask,
         deleteTask,
         updateTask,
