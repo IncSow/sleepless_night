@@ -46,69 +46,75 @@ export const Context = createContext()
 export const useContext = () => useNativeContext(Context)
 
 const ContextProvider = (props) => {
-  const [nextTaskId, setNextTaskId] = useState(1)
+  const [nextTaskId, setNextTaskId] = useState(4)
+  const [nextTodoId, setNextTodoId] = useState(2)
   const [currentCategory, setCurrentCategory] = useState(0)
+  const [state, setState] = useState(initialState)
+  const [filter, toggleFilter] = useState(false)
   
-
-  const getNextTaskId = useCallback(() => {
-    setNextTaskId(nextTaskId + 1)
-  }, [nextTaskId])
-
-  const [nextTodoId, setNextTodoId] = useState(0)
-
   const getNextTodoId = useCallback(() => {
     setNextTodoId(nextTodoId + 1)
+    
+    return nextTodoId
   }, [nextTodoId])
+  
+  const getNextTaskId = useCallback(() => {
+    setNextTaskId(nextTaskId + 1)
 
-  const [state, setState] = useState(initialState)
+    return nextTaskId
+  }, [nextTaskId])
+
+  const createTodo = useCallback(
+    (todoName) => {
+      setState(state => [...state,
+        {
+          name: todoName,
+          id: getNextTodoId(),
+          todo_tasks: [{content: "dummy", id: 5000, completed: true}]
+        }
+      ])
+    },
+    [getNextTodoId]
+  )
+
   const createTask = useCallback(
     (todo, currentCategory) => {
       const newState = state.slice()
       newState[currentCategory].todo_tasks.push({id: getNextTaskId(), content: todo, completed: false})
-      setState((state) => newState)
+      setState(newState)
     },
-    [getNextTaskId]
+    
+    [getNextTaskId, state]
+  )
+
+  const deleteTodo = useCallback(
+    (todoId) => {
+      setState((state) => state.filter( ({id}) => id != todoId ))
+    }, [currentCategory, state.length]
   )
 
   const deleteTask = useCallback(
     (taskId, currentCategory) => {
     const newState = state.slice()
     newState[currentCategory].todo_tasks = newState[currentCategory].todo_tasks.filter(({ id }) => id !== taskId)
-     setState((state) => newState)
-    },[]
+     setState(newState)
+    },[state]
   )
 
-  const deleteTodo = useCallback(
-    (todoId) => {
-      setState((state) => state.filter( ({id}) => id != todoId ))
-    }, []
-  )
+  
 
-
-  const updateTodoName = useCallback(
+  const updateTodo = useCallback(
     (todoId, newName) => {
       setState((state) => state.map(todo => todo.id === todoId ? {name: newName, id: todo.id, todo_tasks: todo.todo_tasks} : todo))
     }, []
   )
 
-  const createTodo = useCallback(
-    (todoName) => {
-      setState((state) => 
-      [...state, 
-        {
-          name: todoName,
-          id: getNextTodoId,
-          todo_tasks: []
-        }
-      ])
-    }, [getNextTodoId]
-  )
 
   const updateTask = useCallback((updatedTask, currentCategory) => {
     const newState = state.slice()
     newState[currentCategory].todo_tasks = newState[currentCategory].todo_tasks.map((task) => task.id === updatedTask.id ? updatedTask : task)
-    setState((state) => newState)
-    }, []
+    setState(newState)
+    }, [state]
   )
 
   return (
@@ -117,12 +123,14 @@ const ContextProvider = (props) => {
       value={{
         state,
         currentCategory,
+        filter,
+        toggleFilter,
         setCurrentCategory,
         createTask,
         deleteTask,
         updateTask,
         deleteTodo,
-        updateTodoName,
+        updateTodo,
         createTodo
       }}
     />
