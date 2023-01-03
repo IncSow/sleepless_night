@@ -38,8 +38,14 @@ const initialState = [
         completed: false,
       },
     ],
+  },
+  {
+    name: "A test!",
+    id: 2,
+    todo_tasks: []
   }
 ]
+initialState[2].todo_tasks = new Array(500).fill(0).map((_, index) => ({id: index+800, content: `test${index}`, completed: false}) )
 
 export const Context = createContext()
 
@@ -47,7 +53,7 @@ export const useContext = () => useNativeContext(Context)
 
 const ContextProvider = (props) => {
   const [nextTaskId, setNextTaskId] = useState(4)
-  const [nextTodoId, setNextTodoId] = useState(2)
+  const [nextTodoId, setNextTodoId] = useState(3)
   const [currentCategory, setCurrentCategory] = useState(0)
   const [state, setState] = useState(initialState)
   const [filter, toggleFilter] = useState(false)
@@ -70,11 +76,11 @@ const ContextProvider = (props) => {
         {
           name: todoName,
           id: getNextTodoId(),
-          todo_tasks: [{content: "dummy", id: 5000, completed: true}]
+          todo_tasks: [{content: "Add new things to this todo", id: getNextTaskId, completed: false}]
         }
       ])
     },
-    [getNextTodoId]
+    [getNextTodoId, getNextTaskId]
   )
 
   const createTask = useCallback(
@@ -90,7 +96,7 @@ const ContextProvider = (props) => {
   const deleteTodo = useCallback(
     (todoId) => {
       setState((state) => state.filter( ({id}) => id != todoId ))
-    }, [currentCategory, state.length]
+    }, []
   )
 
   const deleteTask = useCallback(

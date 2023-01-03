@@ -6,9 +6,9 @@ export const Input = ({ label, ...props }) => {
   return (
 
     <div>
-      <label>
+      <label className="flex flex-col font-semibold">
         {label}
-        <input {...field} {...props} />
+        <input className="border" {...field} {...props} />
       </label>
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>

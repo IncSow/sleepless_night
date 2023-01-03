@@ -13,12 +13,10 @@ export const TaskList = (props) => {
   }
 
   return (
-    <div>
+    <div className="max-h-[80vh] overflow-x-scroll">
     {currentList ? (
       taskList.map((task) => (
-        <TaskItem key={task.id} task={task}>
-          {" "}
-        </TaskItem>
+        <TaskItem key={task.id} task={task}></TaskItem>
       ))
     ) : (
       <h2> There is no task for this todo! Create one c:</h2>

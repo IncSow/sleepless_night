@@ -3,11 +3,24 @@ import { useContext } from "../components/ContextProvider"
 import Link from "../components/Link"
 import { TodoList } from "../components/TodoList"
 import { TaskList } from "../components/TaskList"
+import {
+  TrashIcon,
+  PlusIcon,
+  CheckCircleIcon,
+  PencilSquareIcon,
+  CheckIcon,
+} from "@heroicons/react/24/solid"
+import { useCallback } from "react"
 
 export default function Home() {
-  const { state, currentCategory, filter, toggleFilter } = useContext()
+  const { state, currentCategory, filter, toggleFilter, deleteTodo } =
+    useContext()
 
   const handleToggle = () => toggleFilter(!filter)
+
+  const handleClickTodoDeletion = useCallback(() => {
+    deleteTodo(currentCategory)
+  }, [deleteTodo, currentCategory])
 
   return (
     <div>
@@ -17,9 +30,26 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TodoList></TodoList>
-      <Link href="/category/create">Create a new todo!</Link>
-      <Link href="/task/create">Create a newtask!</Link>
-      <button onClick={handleToggle}>Only show completed tasks ?</button>
+      <div className="flex gap-5 p-3 border-b">
+        <Link href="/task/create">
+          <PlusIcon className="w-8"></PlusIcon>
+        </Link>
+        <Link href="/category/0/edit">
+          <PencilSquareIcon className="w-8"></PencilSquareIcon>
+        </Link>
+        <TrashIcon
+          onClick={handleClickTodoDeletion}
+          className="w-8"
+        ></TrashIcon>
+        <button onClick={handleToggle} className="ml-auto">
+          {filter ? (
+            <CheckIcon className="w-8 text-lime-600 p-1"></CheckIcon>
+          ) : (
+            <CheckCircleIcon className="w-8"></CheckCircleIcon>
+          )}
+        </button>
+      </div>
+
       {currentCategory > state.length - 1 ? (
         <h3>This todo-list has been deleted!</h3>
       ) : (

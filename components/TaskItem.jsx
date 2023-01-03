@@ -1,7 +1,7 @@
+import { TrashIcon } from "@heroicons/react/24/solid"
 import { useCallback } from "react"
 import { useContext } from "./ContextProvider"
 import Link from "./Link"
-
 
 
 export const TaskItem = (props) => {
@@ -30,18 +30,16 @@ export const TaskItem = (props) => {
   )
 
   return (
-    <div className="flex w-50 align-center justify-start gap-5 p-5 border">
+    <div className="flex w-50 align-center justify-start gap-5 p-5 border trash-parent">
       <input
         onClick={handleClickCompleteTask}
         type="checkbox"
         defaultChecked={task.completed}
       />
-      <h1>{task.content}</h1>
-      <Link href={`/task/${task.id}/edit`}>Edit</Link>
-      <button onClick={handleClickTaskDeletion} data-task-id={task.id}>
-        {" "}
-        Delete this task!
-      </button>
+      <Link href={`/task/${task.id}/edit`}>{task.content}</Link>
+      <TrashIcon className="w-6 ml-auto trash-child hidden cursor-pointer" onClick={handleClickTaskDeletion} data-task-id={task.id}>
+        {"Delete this task!"}
+      </TrashIcon>
     </div>
   )
 }
