@@ -3,7 +3,6 @@ import { useCallback } from "react"
 import { useContext } from "./ContextProvider"
 import Link from "./Link"
 
-
 export const TaskItem = (props) => {
   const { task } = props
   const { currentCategory, deleteTask, updateTask } = useContext()
@@ -37,7 +36,11 @@ export const TaskItem = (props) => {
         defaultChecked={task.completed}
       />
       <Link href={`/task/${task.id}/edit`}>{task.content}</Link>
-      <TrashIcon className="w-6 ml-auto trash-child hidden cursor-pointer" onClick={handleClickTaskDeletion} data-task-id={task.id}>
+      <TrashIcon
+        className="w-6 ml-auto trash-child hidden cursor-pointer"
+        onClick={handleClickTaskDeletion}
+        data-task-id={task.id}
+      >
         {"Delete this task!"}
       </TrashIcon>
     </div>

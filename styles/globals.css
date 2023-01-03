@@ -28,6 +28,6 @@ a {
     background: black;
   }
 } */
-.trash-parent:hover .trash-child{
+.trash-parent:hover .trash-child {
   display: block;
 }

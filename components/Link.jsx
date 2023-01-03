@@ -1,13 +1,9 @@
 import NextLink from "next/link"
 
 const Link = (props) => {
-  const {  ...otherProps } = props
+  const { ...otherProps } = props
 
-  return (
-    <NextLink
-      {...otherProps}
-    />
-  )
+  return <NextLink {...otherProps} />
 }
 
 export default Link

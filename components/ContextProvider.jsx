@@ -5,7 +5,6 @@ import {
   useState,
 } from "react"
 
-
 const initialState = [
   {
     name: "Javascript list!",
@@ -42,10 +41,16 @@ const initialState = [
   {
     name: "A test!",
     id: 2,
-    todo_tasks: []
-  }
+    todo_tasks: [],
+  },
 ]
-initialState[2].todo_tasks = new Array(500).fill(0).map((_, index) => ({id: index+800, content: `test${index}`, completed: false}) )
+initialState[2].todo_tasks = new Array(500)
+  .fill(0)
+  .map((_, index) => ({
+    id: index + 800,
+    content: `test${index}`,
+    completed: false,
+  }))
 
 export const Context = createContext()
 
@@ -57,13 +62,13 @@ const ContextProvider = (props) => {
   const [currentCategory, setCurrentCategory] = useState(0)
   const [state, setState] = useState(initialState)
   const [filter, toggleFilter] = useState(false)
-  
+
   const getNextTodoId = useCallback(() => {
     setNextTodoId(nextTodoId + 1)
-    
+
     return nextTodoId
   }, [nextTodoId])
-  
+
   const getNextTaskId = useCallback(() => {
     setNextTaskId(nextTaskId + 1)
 
@@ -72,12 +77,19 @@ const ContextProvider = (props) => {
 
   const createTodo = useCallback(
     (todoName) => {
-      setState(state => [...state,
+      setState((state) => [
+        ...state,
         {
           name: todoName,
           id: getNextTodoId(),
-          todo_tasks: [{content: "Add new things to this todo", id: getNextTaskId, completed: false}]
-        }
+          todo_tasks: [
+            {
+              content: "Add new things to this todo",
+              id: getNextTaskId,
+              completed: false,
+            },
+          ],
+        },
       ])
     },
     [getNextTodoId, getNextTaskId]
@@ -86,41 +98,53 @@ const ContextProvider = (props) => {
   const createTask = useCallback(
     (todo, currentCategory) => {
       const newState = state.slice()
-      newState[currentCategory].todo_tasks.push({id: getNextTaskId(), content: todo, completed: false})
+      newState[currentCategory].todo_tasks.push({
+        id: getNextTaskId(),
+        content: todo,
+        completed: false,
+      })
       setState(newState)
     },
-    
+
     [getNextTaskId, state]
   )
 
-  const deleteTodo = useCallback(
-    (todoId) => {
-      setState((state) => state.filter( ({id}) => id != todoId ))
-    }, []
-  )
+  const deleteTodo = useCallback((todoId) => {
+    setState((state) => state.filter(({ id }) => id != todoId))
+  }, [])
 
   const deleteTask = useCallback(
     (taskId, currentCategory) => {
-    const newState = state.slice()
-    newState[currentCategory].todo_tasks = newState[currentCategory].todo_tasks.filter(({ id }) => id !== taskId)
-     setState(newState)
-    },[state]
+      const newState = state.slice()
+      newState[currentCategory].todo_tasks = newState[
+        currentCategory
+      ].todo_tasks.filter(({ id }) => id !== taskId)
+      setState(newState)
+    },
+    [state]
   )
 
-  
+  const updateTodo = useCallback((todoId, newName) => {
+    setState((state) =>
+      state.map((todo) =>
+        todo.id === todoId
+          ? { name: newName, id: todo.id, todo_tasks: todo.todo_tasks }
+          : todo
+      )
+    )
+  }, [])
 
-  const updateTodo = useCallback(
-    (todoId, newName) => {
-      setState((state) => state.map(todo => todo.id === todoId ? {name: newName, id: todo.id, todo_tasks: todo.todo_tasks} : todo))
-    }, []
-  )
-
-
-  const updateTask = useCallback((updatedTask, currentCategory) => {
-    const newState = state.slice()
-    newState[currentCategory].todo_tasks = newState[currentCategory].todo_tasks.map((task) => task.id === updatedTask.id ? updatedTask : task)
-    setState(newState)
-    }, [state]
+  const updateTask = useCallback(
+    (updatedTask, currentCategory) => {
+      const newState = state.slice()
+      newState[currentCategory].todo_tasks = newState[
+        currentCategory
+      ].todo_tasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      )
+      setState(newState)
+    },
+    [state]
   )
 
   return (
@@ -137,7 +161,7 @@ const ContextProvider = (props) => {
         updateTask,
         deleteTodo,
         updateTodo,
-        createTodo
+        createTodo,
       }}
     />
   )
