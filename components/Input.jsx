@@ -9,9 +9,7 @@ export const Input = ({ label, ...props }) => {
         {label}
         <input className="border" {...field} {...props} />
       </label>
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
+      {meta.error ? <div className="error">{meta.error}</div> : null}
     </div>
   )
 }

@@ -2,6 +2,14 @@ import { XMarkIcon } from "@heroicons/react/24/solid"
 import { Form as FornikForm, Formik } from "formik"
 import { Input } from "./Input"
 import Link from "./Link"
+import * as yup from "yup"
+
+const validationTask = (name) => {
+  const schema = {}
+  schema[name] = yup.string().required("This field cannot be empty!")
+
+  return yup.object(schema)
+}
 
 export const Form = (props) => {
   const {
@@ -12,7 +20,11 @@ export const Form = (props) => {
   } = props
 
   return (
-    <Formik onSubmit={onSubmit} initialValues={initialValues}>
+    <Formik
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+      validationSchema={validationTask(name)}
+    >
       <>
         <header className="flex align-center p-4 border-b">
           <h3 className="font-bold text-xl">{title}</h3>

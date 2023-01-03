@@ -44,13 +44,11 @@ const initialState = [
     todo_tasks: [],
   },
 ]
-initialState[2].todo_tasks = new Array(500)
-  .fill(0)
-  .map((_, index) => ({
-    id: index + 800,
-    content: `test${index}`,
-    completed: false,
-  }))
+initialState[2].todo_tasks = new Array(500).fill(0).map((_, index) => ({
+  id: index + 800,
+  content: `Item ${index}`,
+  completed: false,
+}))
 
 export const Context = createContext()
 
