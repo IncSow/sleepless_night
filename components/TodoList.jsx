@@ -4,11 +4,12 @@ import Link from "./Link"
 import classnames from "classnames"
 import { PlusIcon } from "@heroicons/react/24/solid"
 
-
 const TodoItem = (props) => {
-  const {todo, index} = props
-  const {setCurrentCategory, currentCategory } = useContext()
-  const completedTaskLength = todo.todo_tasks.filter( ({ completed }) => Boolean(completed) ).length 
+  const { todo, index } = props
+  const { setCurrentCategory, currentCategory } = useContext()
+  const completedTaskLength = todo.todo_tasks.filter(({ completed }) =>
+    Boolean(completed)
+  ).length
   const taskLength = todo.todo_tasks.length
   const handleClick = useCallback(
     (event) => {
@@ -23,23 +24,43 @@ const TodoItem = (props) => {
 
   return (
     <div>
-  <div
-    onClick={handleClick}
-    data-category-index={index}
-    className={classnames("flex gap-3 p-4 border-b-0 border rounded-t-md font-bold cursor-pointer")}
-  >
-    <h3>{todo.name}</h3>
-    <div>
-      { (completedTaskLength > 0) ? <span className="bg-lime-500 px-2 rounded-l-full" >{ completedTaskLength }</span> : ""}
-      <span className={classnames("bg-sky-700 px-2", completedTaskLength > 0 ? "rounded-r-full" : "rounded-full")}>{taskLength}</span>
+      <div
+        onClick={handleClick}
+        data-category-index={index}
+        className={classnames(
+          "flex gap-3 p-4 border-b-0 border rounded-t-md font-bold cursor-pointer"
+        )}
+      >
+        <h3>{todo.name}</h3>
+        <div>
+          {completedTaskLength > 0 ? (
+            <span className="bg-lime-500 px-2 rounded-l-full">
+              {completedTaskLength}
+            </span>
+          ) : (
+            ""
+          )}
+          <span
+            className={classnames(
+              "bg-sky-700 px-2",
+              completedTaskLength > 0 ? "rounded-r-full" : "rounded-full"
+            )}
+          >
+            {taskLength}
+          </span>
+        </div>
+      </div>
+      {currentCategory === index ? (
+        <div className="w-full h-1 bg-gray-200">
+          <div
+            style={{ width: (completedTaskLength / taskLength) * 100 + "%" }}
+            className="bg-lime-700 h-full duration-200"
+          ></div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
-  </div>
-    {(currentCategory === index) ?
-      (<div className="w-full h-1 bg-gray-200"><div style={{width: (completedTaskLength / taskLength * 100) + "%"}} className="bg-lime-700 h-full duration-200"></div></div>)
-      : 
-      ("")
-    }
-  </div>
   )
 }
 
@@ -49,15 +70,14 @@ export const TodoList = () => {
   return (
     <div className="flex mt-2 border-b">
       {state.map((todo, index) => (
-          <TodoItem key={index} todo={todo} index={index}></TodoItem>
-        ))
-      }
-      <Link 
+        <TodoItem key={index} todo={todo} index={index}></TodoItem>
+      ))}
+      <Link
         href="/category/create"
-        className="flex justify-center align-center w-14 border border-b-0 rounded-t-md p-3 ml-auto mr-5 border-b-none">
-          <PlusIcon className="w-full"></PlusIcon>
+        className="flex justify-center align-center w-14 border border-b-0 rounded-t-md p-3 ml-auto mr-5 border-b-none"
+      >
+        <PlusIcon className="w-full"></PlusIcon>
       </Link>
     </div>
   )
 }
- 

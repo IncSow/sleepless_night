@@ -4,7 +4,6 @@ export const Input = ({ label, ...props }) => {
   const [field, meta] = useField(props)
 
   return (
-
     <div>
       <label className="flex flex-col font-semibold">
         {label}
@@ -14,6 +13,5 @@ export const Input = ({ label, ...props }) => {
         <div className="error">{meta.error}</div>
       ) : null}
     </div>
-
   )
 }

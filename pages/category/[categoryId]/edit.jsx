@@ -4,8 +4,6 @@ import { useContext } from "../../../components/ContextProvider"
 import Head from "next/head"
 import { Form } from "../../../components/TaskEditingForm"
 
-
-
 export const getServerSideProps = ({ params }) => ({
   props: {
     params: {
@@ -20,10 +18,10 @@ const EditTodoPage = (props) => {
   } = props
 
   const { updateTodo, state } = useContext()
-  const currentTodo = state.find( ({id}) => id === categoryId )
+  const currentTodo = state.find(({ id }) => id === categoryId)
   const router = useRouter()
   const handleSubmit = useCallback(
-    ({name}) => {
+    ({ name }) => {
       updateTodo(currentTodo.id, name)
       router.push("/")
     },
@@ -43,7 +41,7 @@ const EditTodoPage = (props) => {
         name="name"
         title="Edit this list's name"
       />
-      </div>
+    </div>
   )
 }
 
