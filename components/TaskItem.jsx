@@ -37,7 +37,7 @@ export const TaskItem = (props) => {
       />
       <Link href={`/task/${task.id}/edit`}>{task.content}</Link>
       <TrashIcon
-        className="w-6 ml-auto trash-child hidden cursor-pointer"
+        className="w-6 ml-auto trash-child opacity-0 cursor-pointer duration-75"
         onClick={handleClickTaskDeletion}
         data-task-id={task.id}
       >
