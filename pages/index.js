@@ -56,7 +56,7 @@ export default function Home() {
         <TaskList
           state={state}
           currentCategory={currentCategory}
-          onlyCompleted={filter}
+          filterCompleted={filter}
         ></TaskList>
       )}
     </div>

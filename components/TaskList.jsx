@@ -1,13 +1,13 @@
 import { TaskItem } from "./TaskItem"
 
 export const TaskList = (props) => {
-  const { state, currentCategory, onlyCompleted } = props
+  const { state, currentCategory, filterCompleted } = props
   const currentList = state[currentCategory]
   let tasksList
 
-  if (onlyCompleted && currentList) {
-    tasksList = currentList.todo_tasks.filter(({ completed }) =>
-      Boolean(completed)
+  if (!filterCompleted && currentList) {
+    tasksList = currentList.todo_tasks.filter(
+      ({ completed }) => completed === false
     )
   } else {
     tasksList = currentList.todo_tasks

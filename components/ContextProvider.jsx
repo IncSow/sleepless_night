@@ -44,8 +44,9 @@ const initialState = [
     todo_tasks: [],
   },
 ]
+
 initialState[2].todo_tasks = new Array(500).fill(0).map((_, index) => ({
-  id: index + 800,
+  id: index + 800, // I am using 800 as a test index. That way I don't have to worry about ids being duplicate during a demo.
   content: `Item ${index}`,
   completed: false,
 }))
