@@ -5,7 +5,7 @@ export const TaskList = (props) => {
   const currentList = state[currentCategory]
   let tasksList
 
-  if (!filterCompleted && currentList) {
+  if (filterCompleted && currentList) {
     tasksList = currentList.todo_tasks.filter(
       ({ completed }) => completed === false
     )
